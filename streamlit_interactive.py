@@ -193,8 +193,7 @@ def tokenize_string(input_string):
     Returns:
         List[str]: List of tokens.
     """
-    tokens = nltk.word_tokenize(input_string)
-    return tokens
+    return nltk.word_tokenize(input_string)
 
 
 # Cleanup processed resume / job descriptions
@@ -229,43 +228,42 @@ with st.container():
     resumeCol, jobDescriptionCol = st.columns(2)
     with resumeCol:
         uploaded_Resume = st.file_uploader("Choose a Resume", type="pdf")
-        if uploaded_Resume is not None:
-            if st.session_state["resumeUploaded"] == "Pending":
-                save_path_resume = os.path.join(cwd, "Data", "Resumes", uploaded_Resume.name)
-
-                with open(save_path_resume, mode='wb') as w:
-                    w.write(uploaded_Resume.getvalue())
-
-                if os.path.exists(save_path_resume):
-                    st.toast(f'File {uploaded_Resume.name} is successfully saved!', icon="✔️")
-                    update_session_state("resumeUploaded", "Uploaded")
-                    update_session_state("resumePath", save_path_resume)
-        else:
+        if uploaded_Resume is None:
             update_session_state("resumeUploaded", "Pending")
             update_session_state("resumePath", "")
 
+        elif st.session_state["resumeUploaded"] == "Pending":
+            save_path_resume = os.path.join(cwd, "Data", "Resumes", uploaded_Resume.name)
+
+            with open(save_path_resume, mode='wb') as w:
+                w.write(uploaded_Resume.getvalue())
+
+            if os.path.exists(save_path_resume):
+                st.toast(f'File {uploaded_Resume.name} is successfully saved!', icon="✔️")
+                update_session_state("resumeUploaded", "Uploaded")
+                update_session_state("resumePath", save_path_resume)
     with jobDescriptionCol:
         uploaded_JobDescription = st.file_uploader("Choose a Job Description", type="pdf")
-        if uploaded_JobDescription is not None:
-            if st.session_state["jobDescriptionUploaded"] == "Pending":
-                save_path_jobDescription = os.path.join(cwd, "Data", "JobDescription", uploaded_JobDescription.name)
-
-                with open(save_path_jobDescription, mode='wb') as w:
-                    w.write(uploaded_JobDescription.getvalue())
-
-                if os.path.exists(save_path_jobDescription):
-                    st.toast(f'File {uploaded_JobDescription.name} is successfully saved!', icon="✔️")
-                    update_session_state("jobDescriptionUploaded", "Uploaded")
-                    update_session_state("jobDescriptionPath", save_path_jobDescription)
-        else:
+        if uploaded_JobDescription is None:
             update_session_state("jobDescriptionUploaded", "Pending")
             update_session_state("jobDescriptionPath", "")
 
+        elif st.session_state["jobDescriptionUploaded"] == "Pending":
+            save_path_jobDescription = os.path.join(cwd, "Data", "JobDescription", uploaded_JobDescription.name)
+
+            with open(save_path_jobDescription, mode='wb') as w:
+                w.write(uploaded_JobDescription.getvalue())
+
+            if os.path.exists(save_path_jobDescription):
+                st.toast(f'File {uploaded_JobDescription.name} is successfully saved!', icon="✔️")
+                update_session_state("jobDescriptionUploaded", "Uploaded")
+                update_session_state("jobDescriptionPath", save_path_jobDescription)
 with st.spinner('Please wait...'):
-    if (uploaded_Resume is not None and
-            st.session_state["jobDescriptionUploaded"] == "Uploaded" and
-            uploaded_JobDescription is not None and
-            st.session_state["jobDescriptionUploaded"] == "Uploaded"):
+    if (
+        uploaded_Resume is not None
+        and st.session_state["jobDescriptionUploaded"] == "Uploaded"
+        and uploaded_JobDescription is not None
+    ):
 
         resumeProcessor = ParseResume(read_single_pdf(st.session_state["resumePath"]))
         jobDescriptionProcessor = ParseJobDesc(read_single_pdf(st.session_state["jobDescriptionPath"]))
@@ -329,11 +327,10 @@ with st.spinner('Please wait...'):
                 with st.expander("Keywords & Values"):
                     df1 = pd.DataFrame(selected_file['keyterms'], columns=["keyword", "value"])
 
-                    # Create the dictionary
-                    keyword_dict = {}
-                    for keyword, value in selected_file['keyterms']:
-                        keyword_dict[keyword] = value * 100
-
+                    keyword_dict = {
+                        keyword: value * 100
+                        for keyword, value in selected_file['keyterms']
+                    }
                     fig = go.Figure(data=[go.Table(header=dict(values=["Keyword", "Value"],
                                                                font=dict(size=12, color="white"),
                                                                fill_color='#1d2078'),
@@ -347,11 +344,10 @@ with st.spinner('Please wait...'):
                 with st.expander("Keywords & Values"):
                     df2 = pd.DataFrame(selected_jd['keyterms'], columns=["keyword", "value"])
 
-                    # Create the dictionary
-                    keyword_dict = {}
-                    for keyword, value in selected_jd['keyterms']:
-                        keyword_dict[keyword] = value * 100
-
+                    keyword_dict = {
+                        keyword: value * 100
+                        for keyword, value in selected_jd['keyterms']
+                    }
                     fig = go.Figure(data=[go.Table(header=dict(values=["Keyword", "Value"],
                                                                font=dict(size=12, color="white"),
                                                                fill_color='#1d2078'),
@@ -381,8 +377,7 @@ with st.spinner('Please wait...'):
         avs.add_vertical_space(2)
         config_file_path = config_path + "/config.yml"
         if os.path.exists(config_file_path):
-            config_data = read_config(config_file_path)
-            if config_data:
+            if config_data := read_config(config_file_path):
                 print("Config file parsed successfully:")
                 resume_string = ' '.join(selected_file["extracted_keywords"])
                 jd_string = ' '.join(selected_jd["extracted_keywords"])

@@ -64,7 +64,7 @@ def read_single_pdf(file_path: str) -> str:
                 output.append(page.extract_text())
     except Exception as e:
         print(f"Error reading file '{file_path}': {str(e)}")
-    return str(" ".join(output))
+    return " ".join(output)
 
 
 def get_pdf_files(file_path: str) -> list:

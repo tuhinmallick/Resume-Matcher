@@ -35,11 +35,7 @@ st.write(fig)
 df2 = pd.DataFrame(resume['keyterms'], columns=["keyword", "value"])
 st.dataframe(df2)
 
-# Create the dictionary
-keyword_dict = {}
-for keyword, value in resume['keyterms']:
-    keyword_dict[keyword] = value
-
+keyword_dict = dict(resume['keyterms'])
 fig = go.Figure(data=[go.Table(header=dict(values=["Keyword", "Value"],
                                            font=dict(size=12),
                                            fill_color='#070A52'),
@@ -51,10 +47,6 @@ fig = go.Figure(data=[go.Table(header=dict(values=["Keyword", "Value"],
 st.plotly_chart(fig)
 
 st.divider()
-
-for keyword, value in resume['keyterms']:
-    pass
-
 
 # display the waffle chart
 figure = plt.figure(

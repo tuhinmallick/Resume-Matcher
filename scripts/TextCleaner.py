@@ -17,5 +17,4 @@ class TextCleaner:
         tokens = word_tokenize(self.raw_input_text.lower())
         tokens = [token for token in tokens if token not in self.stopwords_set]
         tokens = [self.lemmatizer.lemmatize(token) for token in tokens]
-        cleaned_text = ' '.join(tokens)
-        return cleaned_text
+        return ' '.join(tokens)

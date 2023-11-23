@@ -9,17 +9,17 @@ def list_to_matrix(list_to_convert, num_columns):
       A matrix of the specified size, with the contents of the list.
     """
 
-    matrix = []
-    for i in range(len(list_to_convert) // num_columns):
-        matrix.append(list_to_convert[i * num_columns:(i + 1) * num_columns])
-
+    matrix = [
+        list_to_convert[i * num_columns : (i + 1) * num_columns]
+        for i in range(len(list_to_convert) // num_columns)
+    ]
     if len(list_to_convert) % num_columns > 0:
         matrix.append(list_to_convert[-(len(list_to_convert) % num_columns):])
 
-    for i in range(len(matrix)):
-        for j in range(len(matrix[i])):
-            if matrix[i][j] is None:
-                matrix[i][j] = ""
+    for item in matrix:
+        for j in range(len(item)):
+            if item[j] is None:
+                item[j] = ""
 
     return matrix
 
@@ -38,10 +38,10 @@ def split_list(list_to_split, chunk_size):
     num_chunks = len(list_to_split) // chunk_size
     remainder = len(list_to_split) % chunk_size
 
-    chunks = []
-    for i in range(num_chunks):
-        chunks.append(list_to_split[i * chunk_size:(i + 1) * chunk_size])
-
+    chunks = [
+        list_to_split[i * chunk_size : (i + 1) * chunk_size]
+        for i in range(num_chunks)
+    ]
     if remainder > 0:
         chunks.append(list_to_split[num_chunks * chunk_size:])
 
@@ -53,12 +53,17 @@ def dirty_intersection(list1, list2):
     remainder_1 = [x for x in list1 if x not in intersection]
     remainder_2 = [x for x in list2 if x not in intersection]
 
-    output = pd.DataFrame({
-        'elements': ["Common words", "Words unique to Resume", "Words unique to Job Description"],
-        'values': [len(intersection), len(remainder_1), len(remainder_2)]
-    }, index=[1, 2, 3])
-
-    return output
+    return pd.DataFrame(
+        {
+            'elements': [
+                "Common words",
+                "Words unique to Resume",
+                "Words unique to Job Description",
+            ],
+            'values': [len(intersection), len(remainder_1), len(remainder_2)],
+        },
+        index=[1, 2, 3],
+    )
 
 
 def find_intersection_of_lists(list1, list2):
@@ -128,9 +133,7 @@ def preprocess_text(text):
 
     # Remove punctuation.
     punctuation = set(string.punctuation)
-    tokens = [token for token in tokens if token not in punctuation]
-
-    return tokens
+    return [token for token in tokens if token not in punctuation]
 
 
 # Usage

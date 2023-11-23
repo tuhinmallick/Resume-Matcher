@@ -2,6 +2,9 @@ import logging
 
 
 def init_logging_config():
+
+
+
     class CustomFormatter(logging.Formatter):
         def __init__(self, file=False):
             super().__init__()
@@ -12,7 +15,7 @@ def init_logging_config():
             bold_red = "\x1b[31;1m" if not file else ""
             reset = "\x1b[0m" if not file else ""
             log = "%(asctime)s (%(filename)s:%(lineno)d) - %(levelname)s: "
-            msg = reset + "%(message)s"
+            msg = f"{reset}%(message)s"
 
             self.FORMATS = {
                 logging.DEBUG: blue + log + msg,
@@ -26,6 +29,7 @@ def init_logging_config():
             log_fmt = self.FORMATS.get(record.levelno)
             formatter = logging.Formatter(log_fmt)
             return formatter.format(record)
+
 
     logger = logging.getLogger()
     logger.setLevel(logging.DEBUG)

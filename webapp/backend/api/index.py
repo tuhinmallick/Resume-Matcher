@@ -54,10 +54,7 @@ async def resume_processor(
     # Save the job descriptions (PDFs) to local file system
     save_job_uploads_to_pdfs(jobs_list)
 
-    # Build the response
-    response = build_response(resume_file, jobs_list)
-
-    return response
+    return build_response(resume_file, jobs_list)
 
 
 @app.get("/api/service-keys", tags=["get-service-keys"])

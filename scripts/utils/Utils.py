@@ -27,7 +27,7 @@ class TextCleaner:
     A class for cleaning a text by removing specific patterns.
     """
 
-    def remove_emails_links(text):
+    def remove_emails_links(self):
         """
         Clean the input text by removing specific patterns.
 
@@ -38,10 +38,10 @@ class TextCleaner:
             str: The cleaned text.
         """
         for pattern in REGEX_PATTERNS:
-            text = re.sub(REGEX_PATTERNS[pattern], '', text)
-        return text
+            self = re.sub(REGEX_PATTERNS[pattern], '', self)
+        return self
 
-    def clean_text(text):
+    def clean_text(self):
         """
         Clean the input text by removing specific patterns.
 
@@ -51,14 +51,14 @@ class TextCleaner:
         Returns:
             str: The cleaned text.
         """
-        text = TextCleaner.remove_emails_links(text)
-        doc = nlp(text)
+        self = TextCleaner.remove_emails_links(self)
+        doc = nlp(self)
         for token in doc:
             if token.pos_ == 'PUNCT':
-                text = text.replace(token.text, '')
-        return str(text)
+                self = self.replace(token.text, '')
+        return str(self)
 
-    def remove_stopwords(text):
+    def remove_stopwords(self):
         """
         Clean the input text by removing stopwords.
 
@@ -68,11 +68,11 @@ class TextCleaner:
         Returns:
             str: The cleaned text.
         """
-        doc = nlp(text)
+        doc = nlp(self)
         for token in doc:
             if token.is_stop:
-                text = text.replace(token.text, '')
-        return text
+                self = self.replace(token.text, '')
+        return self
 
 
 class CountFrequency:

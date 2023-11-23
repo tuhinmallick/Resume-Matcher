@@ -124,8 +124,7 @@ def read_json(filename):
 
 
 def tokenize_string(input_string):
-    tokens = nltk.word_tokenize(input_string)
-    return tokens
+    return nltk.word_tokenize(input_string)
 
 
 # Display the main title and subheaders
@@ -151,7 +150,7 @@ resume_names = get_filenames_from_dir("Data/Processed/Resumes")
 
 st.markdown(f"##### There are {len(resume_names)} resumes present. Please select one from the menu below:")
 output  = st.selectbox(f"", resume_names)
-    
+
 
 
 avs.add_vertical_space(5)
@@ -183,11 +182,9 @@ create_star_graph(selected_file['keyterms'], "Entities from Resume")
 
 df2 = pd.DataFrame(selected_file['keyterms'], columns=["keyword", "value"])
 
-# Create the dictionary
-keyword_dict = {}
-for keyword, value in selected_file['keyterms']:
-    keyword_dict[keyword] = value * 100
-
+keyword_dict = {
+    keyword: value * 100 for keyword, value in selected_file['keyterms']
+}
 fig = go.Figure(data=[go.Table(header=dict(values=["Keyword", "Value"],
                                            font=dict(size=12),
                                            fill_color='#070A52'),
@@ -240,11 +237,9 @@ create_star_graph(selected_jd['keyterms'], "Entities from Job Description")
 
 df2 = pd.DataFrame(selected_jd['keyterms'], columns=["keyword", "value"])
 
-# Create the dictionary
-keyword_dict = {}
-for keyword, value in selected_jd['keyterms']:
-    keyword_dict[keyword] = value * 100
-
+keyword_dict = {
+    keyword: value * 100 for keyword, value in selected_jd['keyterms']
+}
 fig = go.Figure(data=[go.Table(header=dict(values=["Keyword", "Value"],
                                            font=dict(size=12),
                                            fill_color='#070A52'),
@@ -266,8 +261,7 @@ avs.add_vertical_space(3)
 
 config_file_path = config_path + "/config.yml"
 if os.path.exists(config_file_path):
-    config_data = read_config(config_file_path)
-    if config_data:
+    if config_data := read_config(config_file_path):
         print("Config file parsed successfully:")
         resume_string = ' '.join(selected_file["extracted_keywords"])
         jd_string = ' '.join(selected_jd["extracted_keywords"])

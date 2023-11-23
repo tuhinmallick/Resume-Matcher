@@ -114,8 +114,7 @@ def read_json(filename):
 
 
 def tokenize_string(input_string):
-    tokens = nltk.word_tokenize(input_string)
-    return tokens
+    return nltk.word_tokenize(input_string)
 
 
 # Display the main title and subheaders
@@ -168,11 +167,9 @@ create_star_graph(selected_file['keyterms'], "Entities from Resume")
 
 df2 = pd.DataFrame(selected_file['keyterms'], columns=["keyword", "value"])
 
-# Create the dictionary
-keyword_dict = {}
-for keyword, value in selected_file['keyterms']:
-    keyword_dict[keyword] = value*100
-
+keyword_dict = {
+    keyword: value * 100 for keyword, value in selected_file['keyterms']
+}
 fig = go.Figure(data=[go.Table(header=dict(values=["Keyword", "Value"],
                                            font=dict(size=12),
                                            fill_color='#070A52'),
@@ -222,11 +219,9 @@ create_star_graph(selected_jd['keyterms'], "Entities from Job Description")
 
 df2 = pd.DataFrame(selected_jd['keyterms'], columns=["keyword", "value"])
 
-# Create the dictionary
-keyword_dict = {}
-for keyword, value in selected_jd['keyterms']:
-    keyword_dict[keyword] = value*100
-
+keyword_dict = {
+    keyword: value * 100 for keyword, value in selected_jd['keyterms']
+}
 fig = go.Figure(data=[go.Table(header=dict(values=["Keyword", "Value"],
                                            font=dict(size=12),
                                            fill_color='#070A52'),
