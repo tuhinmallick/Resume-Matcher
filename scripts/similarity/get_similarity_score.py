@@ -35,11 +35,10 @@ def find_path(folder_name):
     while True:
         if folder_name in os.listdir(curr_dir):
             return os.path.join(curr_dir, folder_name)
-        else:
-            parent_dir = os.path.dirname(curr_dir)
-            if parent_dir == '/':
-                break
-            curr_dir = parent_dir
+        parent_dir = os.path.dirname(curr_dir)
+        if parent_dir == '/':
+            break
+        curr_dir = parent_dir
     raise ValueError(f"Folder '{folder_name}' not found.")
 
 
@@ -75,7 +74,7 @@ def read_doc(path):
 
 class QdrantSearch:
     def __init__(self, resumes, jd):
-        config = read_config(config_path + "/config.yml")
+        config = read_config(f"{config_path}/config.yml")
         self.cohere_key = config['cohere']['api_key']
         self.qdrant_key = config['qdrant']['api_key']
         self.qdrant_url = config['qdrant']['url']
@@ -161,13 +160,14 @@ def get_similarity_score(resume_string, job_description_string):
 if __name__ == "__main__":
     # To give your custom resume use this code
     resume_dict = read_config(
-        READ_RESUME_FROM + "/Resume-bruce_wayne_fullstack.pdf4783d115-e6fc-462e-ae4d-479152884b28.json")
+        f"{READ_RESUME_FROM}/Resume-bruce_wayne_fullstack.pdf4783d115-e6fc-462e-ae4d-479152884b28.json"
+    )
     job_dict = read_config(
-        READ_JOB_DESCRIPTION_FROM + "/JobDescription-job_desc_full_stack_engineer_pdf4de00846-a4fe-4fe5-a4d7"
-                                    "-2a8a1b9ad020.json")
-    resume_keywords = resume_dict["extracted_keywords"]
+        f"{READ_JOB_DESCRIPTION_FROM}/JobDescription-job_desc_full_stack_engineer_pdf4de00846-a4fe-4fe5-a4d7-2a8a1b9ad020.json"
+    )
     job_description_keywords = job_dict["extracted_keywords"]
 
+    resume_keywords = resume_dict["extracted_keywords"]
     resume_string = ' '.join(resume_keywords)
     jd_string = ' '.join(job_description_keywords)
     final_result = get_similarity_score(resume_string, jd_string)

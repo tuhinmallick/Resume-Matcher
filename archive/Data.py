@@ -14,7 +14,7 @@ def read_json(filename):
 def build_resume_list(resume_names, path):
     resumes = []
     for resume in resume_names:
-        selected_file = read_json(path + '/' + resume)
+        selected_file = read_json(f'{path}/{resume}')
         resumes.append({
             "resume": selected_file["clean_data"]
         })
@@ -24,7 +24,7 @@ def build_resume_list(resume_names, path):
 def build_jobdesc_list(jobdesc_names, path):
     resumes = []
     for resume in resume_names:
-        selected_file = read_json(path + '/' + resume)
+        selected_file = read_json(f'{path}/{resume}')
         resumes.append({
             "resume": selected_file["clean_data"]
         })

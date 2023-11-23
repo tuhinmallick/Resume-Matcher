@@ -34,7 +34,7 @@ class ParseResume:
         """
         Returns a dictionary of resume data.
         """
-        resume_dictionary = {
+        return {
             "unique_id": generate_unique_id(),
             "resume_data": self.resume_data,
             "clean_data": self.clean_data,
@@ -48,7 +48,5 @@ class ParseResume:
             "years": self.years,
             "bi_grams": str(self.bi_grams),
             "tri_grams": str(self.tri_grams),
-            "pos_frequencies": self.pos_frequencies
+            "pos_frequencies": self.pos_frequencies,
         }
-
-        return resume_dictionary

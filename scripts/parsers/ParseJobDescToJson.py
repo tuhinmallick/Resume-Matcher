@@ -28,7 +28,7 @@ class ParseJobDesc:
         """
         Returns a dictionary of job description data.
         """
-        job_desc_dictionary = {
+        return {
             "unique_id": generate_unique_id(),
             "job_desc_data": self.job_desc_data,
             "clean_data": self.clean_data,
@@ -37,7 +37,5 @@ class ParseJobDesc:
             "keyterms": self.keyterms,
             "bi_grams": str(self.bi_grams),
             "tri_grams": str(self.tri_grams),
-            "pos_frequencies": self.pos_frequencies
+            "pos_frequencies": self.pos_frequencies,
         }
-
-        return job_desc_dictionary

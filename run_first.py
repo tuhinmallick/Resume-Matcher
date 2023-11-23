@@ -25,7 +25,7 @@ def remove_old_files(files_path):
         except Exception as e:  
             logging.error(f"Error deleting {file_path}:\n{e}")
 
-    logging.info("Deleted old files from "+files_path)
+    logging.info(f"Deleted old files from {files_path}")
 
 
 logging.info('Started to read from Data/Resumes')

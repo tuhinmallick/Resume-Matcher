@@ -69,8 +69,7 @@ class DataExtractor:
             list: A list containing all the found links.
         """
         link_pattern = r'\b(?:https?://|www\.)\S+\b'
-        links = re.findall(link_pattern, self.text)
-        return links
+        return re.findall(link_pattern, self.text)
 
     def extract_links_extended(self):
         """
@@ -89,10 +88,21 @@ class DataExtractor:
             html_content = response.read().decode('utf-8')
             pattern = r'href=[\'"]?([^\'" >]+)'
             raw_links = re.findall(pattern, html_content)
-            for link in raw_links:
-                if link.startswith(('http://', 'https://', 'ftp://', 'mailto:',
-                                    'www.linkedin.com', 'github.com/', 'twitter.com')):
-                    links.append(link)
+            links.extend(
+                link
+                for link in raw_links
+                if link.startswith(
+                    (
+                        'http://',
+                        'https://',
+                        'ftp://',
+                        'mailto:',
+                        'www.linkedin.com',
+                        'github.com/',
+                        'twitter.com',
+                    )
+                )
+            )
         except Exception as e:
             print(f"Error extracting links: {str(e)}")
         return links
@@ -107,8 +117,7 @@ class DataExtractor:
         Returns:
             list: A list of strings representing the names extracted from the text.
         """
-        names = [ent.text for ent in self.doc.ents if ent.label_ == 'PERSON']
-        return names
+        return [ent.text for ent in self.doc.ents if ent.label_ == 'PERSON']
 
     def extract_emails(self):
         """
@@ -121,8 +130,7 @@ class DataExtractor:
             list: A list containing all the extracted email addresses.
         """
         email_pattern = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b'
-        emails = re.findall(email_pattern, self.text)
-        return emails
+        return re.findall(email_pattern, self.text)
 
     def extract_phone_numbers(self):
         """
@@ -135,8 +143,7 @@ class DataExtractor:
             list: A list containing all the extracted phone numbers.
         """
         phone_number_pattern = r'^(\+\d{1,3})?[-.\s]?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$'
-        phone_numbers = re.findall(phone_number_pattern, self.text)
-        return phone_numbers
+        return re.findall(phone_number_pattern, self.text)
 
     def extract_experience(self):
         """
@@ -153,11 +160,7 @@ class DataExtractor:
 
         for token in self.doc:
             if token.text in RESUME_SECTIONS:
-                if token.text == 'Experience' or 'EXPERIENCE' or 'experience':
-                    in_experience_section = True
-                else:
-                    in_experience_section = False
-
+                in_experience_section = True
             if in_experience_section:
                 experience_section.append(token.text)
 
@@ -174,9 +177,7 @@ class DataExtractor:
                 list: A list containing the extracted position and year.
         """
         position_year_search_pattern = r"(\b\w+\b\s+\b\w+\b),\s+(\d{4})\s*-\s*(\d{4}|\bpresent\b)"
-        position_year = re.findall(
-            position_year_search_pattern, self.text)
-        return position_year
+        return re.findall(position_year_search_pattern, self.text)
 
     def extract_particular_words(self):
         """
@@ -189,8 +190,7 @@ class DataExtractor:
             list: A list of extracted nouns.
         """
         pos_tags = ['NOUN', 'PROPN']
-        nouns = [token.text for token in self.doc if token.pos_ in pos_tags]
-        return nouns
+        return [token.text for token in self.doc if token.pos_ in pos_tags]
 
     def extract_entities(self):
         """

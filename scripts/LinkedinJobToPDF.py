@@ -47,22 +47,20 @@ def linkedin_to_pdf(job_url: str):
         # Extract the organization name
         organization = organization_element.text.strip()
 
-        # Find the job description element
-        job_description_element = soup.find('div', {'class': 'show-more-less-html__markup'})
-
-        # Extract the job description and concatenate its elements
-        if job_description_element:
+        if job_description_element := soup.find(
+            'div', {'class': 'show-more-less-html__markup'}
+        ):
             for element in job_description_element.contents:
                 job_description += str(element)
 
         # Set file_path and sanitize organization name and job title
-        file_path = f"{job_path}{sanitize_filename(organization + '__' + job_title)}_{files_number}.pdf"
+        file_path = f"{job_path}{sanitize_filename(f'{organization}__{job_title}')}_{files_number}.pdf"
 
         # Create a PDF file and write the job description to it
         with open(file_path, 'wb') as pdf_file:
             pisa.CreatePDF(job_description, dest=pdf_file, encoding='utf-8')
 
-        logging.info("PDF saved to " + file_path)
+        logging.info(f"PDF saved to {file_path}")
 
     except Exception as e:
         logging.error(f"Could not get the description from the URL: {job_url}")
